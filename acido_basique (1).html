@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyse Acido-Basique</title>
+<style>
+:root{--bg:#0d0f12;--s1:#13161a;--s2:#1a1e24;--bd:#252932;--txt:#e8eaf0;--t2:#8a94a6;--t3:#4a5568;--gr:#66bb6a;--am:#ffa726;--rd:#ef5350;--te:#26c6da;--bl:#4fc3f7;--pu:#ab47bc;--mo:monospace;--fn:sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fn);background:var(--bg);color:var(--txt);font-size:14px}
+.top{background:var(--s1);border-bottom:1px solid var(--bd);padding:12px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:99}
+.badge{background:#4527a0;color:#fff;font-family:var(--mo);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px}
+.top h1{font-size:15px;font-weight:500}
+.wrap{padding:12px 16px 80px;max-width:900px;margin:0 auto}
+.sec{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:14px;margin-bottom:12px}
+.st{font-family:var(--mo);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t2);margin-bottom:11px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.fg{display:flex;flex-direction:column;gap:3px}
+.fg label{font-size:10px;color:var(--t3);font-family:var(--mo);text-transform:uppercase;letter-spacing:.06em}
+.fg input,.fg select{background:var(--s2);border:1px solid var(--bd);border-radius:5px;color:var(--txt);font-family:var(--mo);font-size:13px;padding:7px 9px;outline:none;width:100%}
+.fg input:focus{border-color:var(--te)}
+.fg input:disabled{opacity:.45;background:var(--bg)}
+.ibox{background:rgba(38,198,218,.07);border:1px solid rgba(38,198,218,.22);border-radius:6px;padding:10px 13px;font-size:12px;color:var(--t2);line-height:1.75;margin-bottom:8px}
+.gbox{background:rgba(102,187,106,.08);border:1px solid rgba(102,187,106,.25);border-radius:6px;padding:10px 13px;font-size:12px;color:var(--gr);line-height:1.75;margin-bottom:7px}
+.wbox{background:rgba(255,167,38,.08);border:1px solid rgba(255,167,38,.25);border-radius:6px;padding:10px 13px;font-size:12px;color:var(--am);line-height:1.75;margin-bottom:7px}
+.dbox{background:rgba(239,83,80,.08);border:1px solid rgba(239,83,80,.25);border-radius:6px;padding:10px 13px;font-size:12px;color:var(--rd);line-height:1.75;margin-bottom:7px}
+.pbox{background:rgba(171,71,188,.08);border:1px solid rgba(171,71,188,.25);border-radius:6px;padding:10px 13px;font-size:12px;color:var(--pu);line-height:1.75;margin-bottom:7px}
+.rb{background:var(--s2);border-radius:7px;padding:10px 12px;margin-bottom:8px}
+.rr{display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--bd);font-size:12px;gap:10px;flex-wrap:wrap}
+.rr:last-child{border-bottom:none}
+.rl{color:var(--t2);flex-shrink:0}
+.ok{background:rgba(102,187,106,.18);color:#66bb6a;font-size:10px;padding:2px 7px;border-radius:3px;font-family:var(--mo);font-weight:700;white-space:nowrap}
+.wa{background:rgba(255,167,38,.18);color:#ffa726;font-size:10px;padding:2px 7px;border-radius:3px;font-family:var(--mo);font-weight:700;white-space:nowrap}
+.da{background:rgba(239,83,80,.18);color:#ef5350;font-size:10px;padding:2px 7px;border-radius:3px;font-family:var(--mo);font-weight:700;white-space:nowrap}
+.in{background:rgba(38,198,218,.15);color:#26c6da;font-size:10px;padding:2px 7px;border-radius:3px;font-family:var(--mo);font-weight:700;white-space:nowrap}
+.pu{background:rgba(171,71,188,.15);color:#ab47bc;font-size:10px;padding:2px 7px;border-radius:3px;font-family:var(--mo);font-weight:700;white-space:nowrap}
+.sg2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.sg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.sg4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.sbox{background:var(--s2);border-radius:6px;padding:10px;text-align:center;border:1px solid var(--bd)}
+.sv{font-family:var(--mo);font-size:22px;font-weight:700;margin-bottom:3px}
+.sl{font-size:10px;color:var(--t2)}
+.ic{background:var(--s2);border-left:3px solid var(--te);border-radius:0 6px 6px 0;padding:10px 13px;margin-bottom:7px;font-size:12px;line-height:1.7}
+.ic.ok{border-color:var(--gr)} .ic.wa{border-color:var(--am)} .ic.da{border-color:var(--rd)} .ic.pu{border-color:var(--pu)}
+.ic-t{font-family:var(--mo);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;color:var(--t2)}
+.divider{height:1px;background:var(--bd);margin:12px 0}
+.tag{display:inline-block;font-family:var(--mo);font-size:10px;padding:2px 8px;border-radius:12px;margin:2px;font-weight:600}
+.tag-rd{background:rgba(239,83,80,.18);color:var(--rd)}
+.tag-am{background:rgba(255,167,38,.18);color:var(--am)}
+.tag-bl{background:rgba(79,195,247,.15);color:var(--bl)}
+.tag-gr{background:rgba(102,187,106,.18);color:var(--gr)}
+.tag-pu{background:rgba(171,71,188,.18);color:var(--pu)}
+.reset-btn{background:rgba(239,83,80,.12);border:1px solid rgba(239,83,80,.3);color:var(--rd);font-family:var(--mo);font-size:11px;font-weight:700;padding:8px 16px;border-radius:5px;cursor:pointer;margin-top:6px}
+@media(max-width:580px){.g3,.g4{grid-template-columns:1fr 1fr}.sg3,.sg4{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="badge">pH</span>
+  <h1>Analyse Acido-Basique</h1>
+</div>
+<div class="wrap">
+
+<div class="sec">
+<div class="st">Donnees GDS & Biologie</div>
+<div class="g4">
+  <div class="fg"><label>pH</label><input type="number" id="pH" step="0.01" placeholder="7.40" oninput="CALC()"></div>
+  <div class="fg"><label>PaCO2 (mmHg)</label><input type="number" id="pco2" step="0.1" placeholder="40" oninput="CALC()"></div>
+  <div class="fg"><label>PaO2 (mmHg)</label><input type="number" id="pao2" step="0.1" placeholder="80" oninput="CALC()"></div>
+  <div class="fg"><label>HCO3 mesure (mmol/L)</label><input type="number" id="hco3" step="0.1" placeholder="24" oninput="CALC()"></div>
+</div>
+<div class="g4">
+  <div class="fg"><label>Na+ (mmol/L)</label><input type="number" id="na" placeholder="140" oninput="CALC()"></div>
+  <div class="fg"><label>Cl- (mmol/L)</label><input type="number" id="cl" placeholder="102" oninput="CALC()"></div>
+  <div class="fg"><label>K+ (mmol/L)</label><input type="number" id="k" step="0.1" placeholder="4.0" oninput="CALC()"></div>
+  <div class="fg"><label>Albumine (g/L)</label><input type="number" id="alb" step="0.1" placeholder="40" oninput="CALC()"></div>
+</div>
+<div class="g4">
+  <div class="fg"><label>Lactates (mmol/L)</label><input type="number" id="lact" step="0.1" placeholder="1.0" oninput="CALC()"></div>
+  <div class="fg"><label>Glucose (mmol/L)</label><input type="number" id="gluc" step="0.1" placeholder="5.5" oninput="CALC()"></div>
+  <div class="fg"><label>Uree (mmol/L)</label><input type="number" id="uree" step="0.1" placeholder="5.0" oninput="CALC()"></div>
+  <div class="fg"><label>FiO2 (%)</label><input type="number" id="fio2" placeholder="21" oninput="CALC()"></div>
+</div>
+<div class="g3">
+  <div class="fg"><label>Hemoglobine (g/dL)</label><input type="number" id="hb" step="0.1" placeholder="12" oninput="CALC()"></div>
+  <div class="fg"><label>SpO2 (%)</label><input type="number" id="spo2" placeholder="97" oninput="CALC()"></div>
+  <div class="fg"><label>Temperature (C)</label><input type="number" id="temp" step="0.1" placeholder="37" oninput="CALC()"></div>
+</div>
+<button class="reset-btn" onclick="RESET()">Reinitialiser</button>
+</div>
+
+<!-- RESULTATS UNIFIES -->
+<div id="res-main"></div>
+
+</div><!-- /wrap -->
+<script>
+function GE(id){return document.getElementById(id);}
+function VN(id){var e=GE(id);if(!e)return null;var v=parseFloat(e.value);return isNaN(v)?null:v;}
+function SET(id,html){var e=GE(id);if(e)e.innerHTML=html;}
+function R1(v){return Math.round(v*10)/10;}
+function R2(v){return Math.round(v*100)/100;}
+
+function RESET(){
+  var ids=['pH','pco2','pao2','hco3','na','cl','k','alb','lact','gluc','uree','fio2','hb','spo2','temp'];
+  for(var i=0;i<ids.length;i++){var e=GE(ids[i]);if(e)e.value='';}
+  SET('res-main','');
+}
+
+function CALC(){
+  var pH=VN('pH'), pco2=VN('pco2'), pao2=VN('pao2'), hco3=VN('hco3');
+  var na=VN('na'), cl=VN('cl'), k=VN('k'), alb=VN('alb');
+  var lact=VN('lact'), gluc=VN('gluc'), uree=VN('uree'), fio2=VN('fio2');
+  var hb=VN('hb'), spo2=VN('spo2'), temp=VN('temp')||37;
+
+  if(!pH||!pco2){SET('res-main','<div class="ibox">Saisir au minimum le pH et la PaCO2 pour demarrer l\'analyse.</div>');return;}
+
+  var hco3_use = hco3 || R1(0.0307*pco2*Math.pow(10,pH-6.1));
+  var be = R1((hco3_use-24)+16.2*(pH-7.4));
+
+  // ── Valeurs de base ──
+  var pH_cls = pH>=7.35&&pH<=7.45 ? 'var(--gr)' : (pH<7.20||pH>7.55) ? 'var(--rd)' : 'var(--am)';
+  var pco2_cls = pco2>=35&&pco2<=45 ? 'var(--gr)' : 'var(--am)';
+  var hco3_cls = hco3_use>=22&&hco3_use<=26 ? 'var(--gr)' : 'var(--am)';
+  var be_cls = Math.abs(be)<=2 ? 'var(--gr)' : Math.abs(be)>8 ? 'var(--rd)' : 'var(--am)';
+
+  var h = '<div class="sec"><div class="st">Resume biologique</div>';
+  h += '<div class="sg4">';
+  h += '<div class="sbox"><div class="sv" style="color:'+pH_cls+'">'+pH+'</div><div class="sl">pH</div></div>';
+  h += '<div class="sbox"><div class="sv" style="color:'+pco2_cls+'">'+pco2+'</div><div class="sl">PaCO2 (mmHg)</div></div>';
+  h += '<div class="sbox"><div class="sv" style="color:'+hco3_cls+'">'+hco3_use+'</div><div class="sl">HCO3 (mmol/L)</div></div>';
+  h += '<div class="sbox"><div class="sv" style="color:'+be_cls+'">'+be+'</div><div class="sl">Base Excess</div></div>';
+  h += '</div>';
+
+  // Correction temperature
+  if(Math.abs(temp-37)>0.5){
+    var pH_ct=R2(pH+0.015*(37-temp));
+    var pco2_ct=R1(pco2*Math.pow(10,0.019*(37-temp)));
+    h+='<div class="ibox">Correction temp ('+temp+'C) : pH='+pH_ct+' | PaCO2='+pco2_ct+' mmHg</div>';
+  }
+  h+='</div>';
+
+  // ── Determiner le trouble primaire ──
+  var type='normal', phase='';
+
+  if(pH<7.35){
+    if(pco2>45){type='resp';phase='acidose';if(hco3_use>26)type='resp_comp';}
+    else{type='meta';phase='acidose';}
+  } else if(pH>7.45){
+    if(pco2<35){
+      var def=40-pco2;
+      var hco3_chron_exp=R1(24-def*0.5);
+      if(hco3_use>=hco3_chron_exp-3&&hco3_use<=hco3_chron_exp+3){type='resp_chron_comp';phase='alcalose';}
+      else{type='resp';phase='alcalose';if(hco3_use<22)type='resp_comp';}
+    } else{type='meta';phase='alcalose';}
+  } else {
+    if(pco2>45&&hco3_use>26){type='mixte_AR_AM';phase='mixte';}
+    else if(pco2<35&&hco3_use<22){
+      var def2=40-pco2;
+      var hco3_ce=R1(24-def2*0.5);
+      if(hco3_use>=hco3_ce-3&&hco3_use<=hco3_ce+3){type='resp_chron_comp';phase='alcalose';}
+      else{type='mixte_AlcR_AcidM';phase='mixte';}
+    } else{type='normal';}
+  }
+
+  // ── SECTION 1 : Diagnostic Henderson-Hasselbalch ──
+  h += '<div class="sec"><div class="st">1. Diagnostic Henderson-Hasselbalch</div>';
+
+  if(type==='normal'){
+    h+='<div class="gbox">Equilibre acido-basique NORMAL — pH '+pH+' | PaCO2 '+pco2+' mmHg | HCO3 '+hco3_use+' mmol/L</div>';
+    // Ne pas afficher les sections suivantes si normal
+  } else {
+    // Diagnostic principal
+    var diagMap={
+      'resp_acidose':     ['da','Acidose respiratoire'],
+      'resp_comp_acidose':['wa','Acidose respiratoire compensee (partiellement)'],
+      'meta_acidose':     ['da','Acidose metabolique'],
+      'resp_alcalose':    ['wa','Alcalose respiratoire'],
+      'resp_comp_alcalose':['wa','Alcalose respiratoire compensee'],
+      'resp_chron_comp_alcalose':['ok','Alcalose respiratoire CHRONIQUE — pH normalise par compensation renale'],
+      'meta_alcalose':    ['wa','Alcalose metabolique'],
+      'mixte_AR_AM_mixte':['pu','Trouble MIXTE : Acidose respiratoire + Alcalose metabolique (pH normalise)'],
+      'mixte_AlcR_AcidM_mixte':['pu','Trouble MIXTE : Alcalose respiratoire + Acidose metabolique (pH normalise)'],
+    };
+    var dk = type+'_'+phase;
+    var diag = diagMap[dk] || ['in','Trouble complexe'];
+
+    h+='<div class="ic '+diag[0]+'"><div class="ic-t">Diagnostic principal</div>';
+    h+='<b>'+diag[1]+'</b>';
+    if(pH<7.20)h+=' &nbsp;<span class="da">pH &lt;7.20 — SEVERE</span>';
+    else if(pH<7.30)h+=' &nbsp;<span class="wa">pH &lt;7.30 — significatif</span>';
+    else if(pH>7.55)h+=' &nbsp;<span class="da">pH &gt;7.55 — SEVERE</span>';
+    h+='</div>';
+
+    // ── Compensations attendues ──
+    h+='<div class="divider"></div><b style="font-family:var(--mo);font-size:11px;color:var(--t2)">COMPENSATIONS ATTENDUES</b><div style="margin-top:8px">';
+    h+=COMP(phase,type,pH,pco2,hco3_use,be);
+    h+='</div>';
+
+    // ── Pistes diagnostiques ──
+    h+='<div class="divider"></div><b style="font-family:var(--mo);font-size:11px;color:var(--t2)">PISTES DIAGNOSTIQUES</b><div style="margin-top:8px">';
+    h+=PISTES(phase,type,pco2,hco3_use,be,lact,na,cl,alb,gluc,uree);
+    h+='</div>';
+  }
+  h+='</div>';
+
+  // ── SECTION 2 : Trou anionique (si acidose meta ou trouble mixte) ──
+  if(na && (phase==='acidose'&&type==='meta' || phase==='mixte')){
+    h+=TA(na,cl,k,alb,hco3_use,lact,gluc,uree,be);
+  } else if(na && phase!=='normal'){
+    h+=TA(na,cl,k,alb,hco3_use,lact,gluc,uree,be);
+  }
+
+  // ── SECTION 3 : Stewart (si Na et Cl disponibles) ──
+  if(na&&cl){
+    h+=STEW(na,cl,k||4,lact||0,hco3_use,alb||40,pH,phase,type);
+  }
+
+  // ── SECTION 4 : Oxygenation (si PaO2 et FiO2) ──
+  if(pao2&&fio2){
+    h+=OXY(pao2,fio2,pco2,hb,spo2);
+  }
+
+  SET('res-main',h);
+}
+
+function COMP(phase,type,pH,pco2,hco3,be){
+  var h='<div class="rb">';
+
+  if(phase==='acidose'&&type.indexOf('resp')>=0){
+    var exc=pco2-40;
+    var hco3_aigu=R1(24+exc*0.1);
+    var hco3_chron=R1(24+exc*0.35);
+    h+='<div class="rr"><span class="rl">HCO3 predit (phase aigue)</span><span><span class="in">'+hco3_aigu+' mmol/L</span></span></div>';
+    h+='<div class="rr"><span class="rl">HCO3 predit (phase chronique)</span><span><span class="in">'+hco3_chron+' mmol/L</span></span></div>';
+    h+='<div class="rr"><span class="rl">HCO3 mesure</span><span>';
+    if(hco3>hco3_chron+3)h+='<span class="pu">'+hco3+' — Alcalose metabolique SURAJOUTEE</span>';
+    else if(hco3<hco3_aigu-3)h+='<span class="da">'+hco3+' — Acidose metabolique SURAJOUTEE</span>';
+    else if(hco3>=hco3_chron-2)h+='<span class="ok">'+hco3+' — Compensation chronique adequate</span>';
+    else h+='<span class="ok">'+hco3+' — Compensation aigue adequate</span>';
+    h+='</span></div>';
+
+  } else if(phase==='alcalose'&&type.indexOf('resp')>=0){
+    var def=40-pco2;
+    var hco3a=R1(24-def*0.2);
+    var hco3c=R1(24-def*0.5);
+    h+='<div class="rr"><span class="rl">HCO3 predit (phase aigue)</span><span><span class="in">'+hco3a+' mmol/L</span></span></div>';
+    h+='<div class="rr"><span class="rl">HCO3 predit (phase chronique)</span><span><span class="in">'+hco3c+' mmol/L</span></span></div>';
+    h+='<div class="rr"><span class="rl">HCO3 mesure</span><span>';
+    if(hco3>hco3a+3)h+='<span class="pu">'+hco3+' — Alcalose metabolique SURAJOUTEE</span>';
+    else if(hco3<hco3c-3)h+='<span class="da">'+hco3+' — Acidose metabolique SURAJOUTEE</span>';
+    else h+='<span class="ok">'+hco3+' — Compensation adequate</span>';
+    h+='</span></div>';
+
+  } else if(phase==='acidose'&&type==='meta'){
+    var pw=R1(1.5*hco3+8);
+    var ps=R1(hco3+15);
+    h+='<div class="rr"><span class="rl">PCO2 attendue (Winters)</span><span><span class="in">'+pw+' +/- 2 mmHg</span></span></div>';
+    h+='<div class="rr"><span class="rl">PCO2 attendue (regle simple)</span><span><span class="in">'+ps+' mmHg</span></span></div>';
+    h+='<div class="rr"><span class="rl">PCO2 mesuree</span><span>';
+    if(pco2>pw+2)h+='<span class="da">'+pco2+' — Acidose respiratoire SURAJOUTEE</span>';
+    else if(pco2<pw-2)h+='<span class="wa">'+pco2+' — Alcalose respiratoire SURAJOUTEE</span>';
+    else h+='<span class="ok">'+pco2+' — Compensation respiratoire adequate</span>';
+    h+='</span></div>';
+    // Deficit bicarbonate
+    var def_hco3=R1(24-hco3);
+    var nah=R1(def_hco3*0.3*70);
+    h+='<div class="rr"><span class="rl">Deficit HCO3</span><span>'+def_hco3+' mmol/L — NaHCO3 si pH &lt;7.10 (70kg) : '+nah+' mmol (demi-dose puis reeval)</span></div>';
+
+  } else if(phase==='alcalose'&&type==='meta'){
+    var pa=R1(0.7*hco3+21);
+    h+='<div class="rr"><span class="rl">PCO2 attendue</span><span><span class="in">'+pa+' +/- 2 mmHg</span></span></div>';
+    h+='<div class="rr"><span class="rl">PCO2 mesuree</span><span>';
+    if(pco2>pa+2)h+='<span class="da">'+pco2+' — Acidose respiratoire SURAJOUTEE</span>';
+    else if(pco2<pa-2)h+='<span class="wa">'+pco2+' — Alcalose respiratoire SURAJOUTEE</span>';
+    else h+='<span class="ok">'+pco2+' — Compensation adequate</span>';
+    h+='</span></div>';
+  }
+  h+='</div>';
+  return h;
+}
+
+function PISTES(phase,type,pco2,hco3,be,lact,na,cl,alb,gluc,uree){
+  var h='';
+
+  if(phase==='acidose'&&type.indexOf('resp')>=0){
+    h+='<div class="wbox"><b>Acidose respiratoire — causes a eliminer :</b><br>';
+    h+='<span class="tag tag-rd">Depression SNC</span> Sedatifs, opioides, BZD<br>';
+    h+='<span class="tag tag-rd">Obstruction</span> BPCO decompense, bronchospasme severe, laryngospasme<br>';
+    h+='<span class="tag tag-rd">Neuromusculaire</span> Guillain-Barre, SLA, myasthenie, curare residuel, myopathie de rea<br>';
+    h+='<span class="tag tag-rd">Mecanique</span> Pneumothorax, hemothorax, epanchement massif, obesite<br>';
+    h+='<span class="tag tag-rd">Ventilation</span> Hypoventilation sous VM, auto-PEEP, espace mort augmente (SDRA)<br>';
+    if(pco2>60)h+='<br><b>PaCO2 '+pco2+' mmHg</b> — Hypercapnie significant. Si pH>7.25 : hypercapnie permissive acceptable en SDRA. Si pH&lt;7.20 : augmenter FR ou Vt prudemment.</div>';
+    else h+='</div>';
+
+  } else if(phase==='alcalose'&&type.indexOf('resp')>=0){
+    h+='<div class="wbox"><b>Alcalose respiratoire — causes a eliminer :</b><br>';
+    h+='<span class="tag tag-am">Stimulation centrale</span> Douleur, anxiete, sepsis precoce (mediateurs inflammatoires)<br>';
+    h+='<span class="tag tag-am">Hypoxemie</span> Stimulation des chemocepteurs peripheriques (PaO2 &lt;60 mmHg)<br>';
+    h+='<span class="tag tag-am">Hepatique</span> Insuffisance hepatique — alcalose respiratoire precoce typique<br>';
+    h+='<span class="tag tag-am">Grossesse</span> Hyperventilation physiologique (progesterone)<br>';
+    h+='<span class="tag tag-am">VM</span> Hyperventilation — reduire FR ou Vt<br>';
+    h+='<span class="tag tag-am">Salicyles</span> Alcalose resp + acidose meta = intoxication aspirine classique</div>';
+
+  } else if(phase==='acidose'&&type==='meta'){
+    var ta = na ? R1(na-(cl||102)-hco3) : null;
+    var ta_corr = ta!==null&&alb ? R1(ta+2.5*(4.0-alb/10)) : ta;
+    h+='<div class="wbox"><b>Acidose metabolique — orienter selon le trou anionique :</b><br>';
+    if(ta_corr!==null){
+      if(ta_corr>16){
+        h+='<b>TA corrige = '+ta_corr+' mEq/L — ELEVE → Chercher :</b><br>';
+        if(lact&&lact>2)h+='<span class="tag tag-rd">Lactates eleves ('+lact+' mmol/L)</span> Choc (sepsis, hypovolemie, cardiogene), ischaemie mesentere, metformine<br>';
+        else h+='<span class="tag tag-rd">Lactates</span> Choc, hypoxie, metformine<br>';
+        if(gluc&&gluc>15)h+='<span class="tag tag-rd">Acidocetose diabetique</span> Glycemie '+gluc+' mmol/L — corps cetoniques, deshydratation<br>';
+        else h+='<span class="tag tag-rd">Acidocetose</span> Diabete (glycemie ++), jeune, alcool<br>';
+        if(uree&&uree>20)h+='<span class="tag tag-rd">Uremie</span> Uree '+uree+' mmol/L — IRA/IRC (sulfates, phosphates)<br>';
+        else h+='<span class="tag tag-rd">Uremie</span> IRA/IRC<br>';
+        h+='<span class="tag tag-rd">Toxiques</span> Methanol (formiate), ethylene glycol (oxalate), salicyles<br>';
+      } else {
+        h+='<b>TA corrige = '+ta_corr+' mEq/L — NORMAL → Acidose HYPERCHLOREMIQUE :</b><br>';
+        h+='<span class="tag tag-am">Diarrhee</span> Perte de bicarbonates digestifs<br>';
+        h+='<span class="tag tag-am">RTA</span> Acidose tubulaire renale (type 1, 2 ou 4)<br>';
+        h+='<span class="tag tag-am">NaCl excessif</span> Serum physiologique 0.9% en grandes quantites<br>';
+        h+='<span class="tag tag-am">Fistule digestive</span> Ileo/jejunostomie, fistule pancreatique<br>';
+      }
+    } else {
+      h+='Saisir Na+ et Cl- pour orienter selon le trou anionique.</div>';
+    }
+    if(h.endsWith('<br>'))h=h.slice(0,-4);
+    h+='</div>';
+
+  } else if(phase==='alcalose'&&type==='meta'){
+    h+='<div class="wbox"><b>Alcalose metabolique — chloro-sensible ou resistante ?</b><br>';
+    h+='<b>Chloro-sensible (Cl- urinaire &lt;20 mmol/L) :</b><br>';
+    h+='<span class="tag tag-am">Vomissements / aspiration gastrique</span> Perte HCl → HCO3 augmente<br>';
+    h+='<span class="tag tag-am">Diuretiques</span> Furosemide, thiazidiques — contraction volumique + perte K+<br>';
+    h+='<span class="tag tag-am">Post-hypercapnie</span> Compensation non resolue apres correction de l\'hypercapnie<br>';
+    h+='<b>Chloro-resistante (Cl- urinaire &gt;20 mmol/L) :</b><br>';
+    h+='<span class="tag tag-pu">Hyperaldosteronisme</span> Conn, Cushing — HTA + hypokaliemie<br>';
+    h+='<span class="tag tag-pu">Hypokaliemie severe</span> Echange H+/K+ intracellulaire<br>';
+    h+='<span class="tag tag-pu">Hypomagnesiemie</span> Favorise la reabsorption tubulaire de K+ et HCO3<br>';
+    h+='<b>Traitement :</b> NaCl si chloro-sensible | Corriger K+ et Mg2+ | Acetazolamide si post-hypercapnie</div>';
+
+  } else if(phase==='mixte'){
+    h+='<div class="pbox"><b>Trouble MIXTE — deux troubles coexistants :</b><br>';
+    if(type==='mixte_AR_AM')h+='Acidose respiratoire + Alcalose metabolique. pH normalise masque deux troubles. Traiter les deux causes independamment.';
+    else h+='Alcalose respiratoire + Acidose metabolique. Ex : salicyles (alcalose resp + acidose meta a TA eleve), insuffisance hepatique + acidose lactique.';
+    h+='</div>';
+  }
+  return h;
+}
+
+function TA(na,cl,k,alb,hco3,lact,gluc,uree,be){
+  var alb_use=alb||40;
+  var ta=R1(na-cl-hco3);
+  var ta_corr=R1(ta+2.5*(4.0-alb_use/10));
+  var h='<div class="sec"><div class="st">2. Trou anionique & bilan ionique</div>';
+
+  h+='<div class="rb">';
+  h+='<div class="rr"><span class="rl">TA brut (Na-Cl-HCO3)</span><span><span class="'+(ta>=8&&ta<=12?'ok':ta>16?'da':'wa')+'">'+ta+'</span> mEq/L (N: 8-12)</span></div>';
+  h+='<div class="rr"><span class="rl">TA corrige albumine ('+alb_use+' g/L)</span><span><span class="'+(ta_corr>=8&&ta_corr<=16?'ok':ta_corr>16?'da':'wa')+'">'+ta_corr+'</span> mEq/L (N: 12+/-4)</span></div>';
+  if(lact)h+='<div class="rr"><span class="rl">Lactates</span><span><span class="'+(lact<=2?'ok':lact<=4?'wa':'da')+'">'+lact+'</span> mmol/L — contribution TA : '+lact+' mEq/L</span></div>';
+  if(cl)h+='<div class="rr"><span class="rl">Rapport Na/Cl</span><span><span class="'+(na/cl>=1.30&&na/cl<=1.38?'ok':'wa')+'">'+R2(na/cl)+'</span> (N: 1.32-1.38) '+(na/cl<1.30?'Hyperchloremie':na/cl>1.38?'Hypochloremie':'')+'</span></div>';
+  if(gluc&&gluc>10){
+    var na_corr=R1(na+1.6*(gluc/18-5.5));
+    h+='<div class="rr"><span class="rl">Na+ corrige glycemie</span><span>'+na_corr+' mmol/L — hyperglycemie ('+gluc+' mmol/L)</span></div>';
+  }
+  h+='</div>';
+
+  if(ta_corr>16){
+    var delta_ta=ta_corr-12;
+    var delta_hco3=24-hco3;
+    if(delta_hco3>0){
+      var dr=R2(delta_ta/delta_hco3);
+      h+='<div class="rb">';
+      h+='<div class="rr"><span class="rl">Delta ratio (delta-TA / delta-HCO3)</span><span><b>'+dr+'</b></span></div>';
+      h+='<div class="rr"><span class="rl">Interpretation</span><span>';
+      if(dr<0.4)h+='<span class="da">Acidose hyperchloremique pure — pas de TA eleve reel</span>';
+      else if(dr<1)h+='<span class="wa">Acidose MIXTE : TA eleve + hyperchloremique</span>';
+      else if(dr<=2)h+='<span class="ok">Acidose a TA eleve pure</span>';
+      else h+='<span class="pu">Alcalose metabolique surajoutee (HCO3 trop haut)</span>';
+      h+='</span></div></div>';
+    }
+  } else if(ta_corr<8){
+    h+='<div class="wbox">TA bas (&lt;8) — Hypoalbuminemie (chaque -10g/L abaisse le TA de 2.5) | Hypercalcemie | Hypermagnesiemie | Myelome (cations positifs)</div>';
+  }
+
+  h+='</div>';
+  return h;
+}
+
+function STEW(na,cl,k,lact,hco3,alb,pH,phase,type){
+  // SID simplifie
+  var sid_app=R1(na+k-cl-lact);
+  // ATOT Figge
+  var alb_e=R1(alb*(0.123*pH-0.631));
+  var phos_e=R1(1.0*(0.309*pH-0.469));
+  var atot=R1(alb_e+phos_e);
+  var atot_norm=R1(40*(0.123*7.4-0.631)+1.0*(0.309*7.4-0.469));
+  // SID effectif
+  var sid_eff=R1(hco3+alb_e+phos_e);
+  // SIG corrige
+  var alb_ref=40*(0.123*7.4-0.631);
+  var phos_ref=1.0*(0.309*7.4-0.469);
+  var sig_ref=R1((140+4-102)-(24+alb_ref+phos_ref));
+  var sig=R1(sid_app-sid_eff-sig_ref);
+
+  var effect_sid=R1(sid_app-40);
+  var effect_atot=R1(atot_norm-atot);
+  var sid_type=effect_sid>2?'alc':effect_sid<-2?'acid':'norm';
+  var atot_type=effect_atot>2?'alc':effect_atot<-2?'acid':'norm';
+  var sig_type=sig>10?'acid_fort':sig>5?'acid_mod':'norm';
+
+  var acid_n=(sid_type==='acid'?1:0)+(atot_type==='acid'?1:0)+(sig_type!=='norm'?1:0);
+  var alc_n=(sid_type==='alc'?1:0)+(atot_type==='alc'?1:0);
+
+  // N'afficher Stewart que si ca apporte quelque chose de supplementaire
+  // (trouble non evident par HH, ou discordance, ou hypoalbuminemie)
+  var show=false;
+  if(acid_n>0||alc_n>0)show=true;
+  if(alb<30)show=true; // hypoalbuminemie masquante
+  if(sig>5)show=true;  // anions non mesures
+  if(!show)return '';
+
+  var h='<div class="sec"><div class="st">3. Approche de Stewart — Analyse physicochimique</div>';
+  h+='<div class="ibox">Stewart decompose le trouble en 3 variables independantes : <b style="color:var(--txt)">SID</b> (ions forts), <b style="color:var(--txt)">ATOT</b> (acides faibles = albumine + phosphate) et <b style="color:var(--txt)">PCO2</b>. Permet de detecter des troubles masques.</div>';
+
+  // Tableau
+  h+='<div class="rb">';
+  h+='<div class="rr"><span class="rl">SID apparent (Na+K-Cl-Lact)</span><span><span class="'+(sid_app>=38&&sid_app<=42?'ok':sid_app<38?'da':'wa')+'">'+sid_app+'</span> mEq/L (N: 38-42) — '+(sid_type==='alc'?'Alcalinisant':sid_type==='acid'?'Acidifiant':'Neutre')+'</span></div>';
+  h+='<div class="rr"><span class="rl">Na - Cl</span><span>'+R1(na-cl)+' mEq/L (N: 38+/-2) '+(na-cl<36?'<span class="da">Hyperchloremie</span>':na-cl>40?'<span class="wa">Hypochloremie</span>':'')+'</span></div>';
+  if(lact>0)h+='<div class="rr"><span class="rl">Lactates dans SID</span><span>'+lact+' mmol/L — reduisent SID de '+lact+' mEq/L</span></div>';
+  h+='<div class="rr"><span class="rl">ATOT (albuminate + phosphate)</span><span><span class="'+(Math.abs(atot-atot_norm)<=2?'ok':atot<atot_norm-2?'wa':'da')+'">'+atot+'</span> mEq/L (N: ~'+atot_norm+') — '+(atot_type==='alc'?'Alcalinisant (ATOT bas)':atot_type==='acid'?'Acidifiant (ATOT eleve)':'Neutre')+'</span></div>';
+  h+='<div class="rr"><span class="rl">SIG corrige (anions non mesures)</span><span><span class="'+(sig<=2?'ok':sig<=5?'wa':'da')+'">'+sig+'</span> mEq/L (N: 0-2) — '+(sig>5?'Anions forts non mesures':'Normal')+'</span></div>';
+  h+='</div>';
+
+  // Diagnostic Stewart
+  var diag_stew='';
+  var cls_stew='wa';
+  if(sig>10&&sid_type==='alc'){
+    diag_stew='Trouble MIXTE Stewart : Acidose par anions non mesures (SIG='+sig+') masquee par alcalose SID ('+sid_app+' mEq/L). Le pH net depend de l\'equilibre entre ces deux effets. Chercher : ceto-acides, sulfates (IRA), toxiques (methanol, ethylene glycol).';
+    cls_stew='da';
+  } else if(sig>10&&sid_type==='acid'){
+    diag_stew='Double acidose : SID bas ('+sid_app+') + SIG eleve ('+sig+'). Acidose severe.';
+    cls_stew='da';
+  } else if(sig>5){
+    diag_stew='Acidose par anions non mesures (SIG='+sig+' mEq/L). Chercher : ceto-acides, sulfates, acides organiques, toxiques.';
+    cls_stew='da';
+  } else if(sid_type==='acid'&&atot_type!=='alc'){
+    diag_stew='Acidose SID : '+(na-cl<36?'Hyperchloremie (NaCl, diarrhee, RTA)':lact>2?'Hyperlactatemie':'SID bas');
+  } else if(sid_type==='alc'){
+    diag_stew='Alcalose SID : '+(na-cl>40?'Hypochloremie (vomissements, diuretiques)':'SID eleve');
+  }
+
+  if(alb<30){
+    var masquage=R1(2.5*(40-alb)/10);
+    diag_stew+=(diag_stew?' | ':'')+'Hypoalbuminemie ('+alb+' g/L) masque une acidose de '+masquage+' mEq/L — corriger le TA de +'+masquage+' mEq/L.';
+  }
+
+  if(diag_stew)h+='<div class="ic '+cls_stew+'"><div class="ic-t">Interpretation Stewart</div>'+diag_stew+'</div>';
+
+  h+='</div>';
+  return h;
+}
+
+function OXY(pao2,fio2,pco2,hb,spo2){
+  var pf=R1(pao2/(fio2/100));
+  var pb=760, ph2o=47;
+  var pao2_theo=R1((fio2/100)*(pb-ph2o)-(pco2||40)/0.8);
+  var gradient=R1(pao2_theo-pao2);
+  var h='<div class="sec"><div class="st">4. Oxygenation</div>';
+  var pf_cls=pf>=300?'ok':pf>=200?'wa':'da';
+  h+='<div class="sg3">';
+  h+='<div class="sbox"><div class="sv" style="color:'+(pf_cls==='ok'?'var(--gr)':pf_cls==='wa'?'var(--am)':'var(--rd)')+'">'+pf+'</div><div class="sl">P/F ratio (mmHg)</div></div>';
+  h+='<div class="sbox"><div class="sv" style="color:var(--bl)">'+pao2_theo+'</div><div class="sl">PAO2 theorique</div></div>';
+  h+='<div class="sbox"><div class="sv" style="color:'+(gradient<10?'var(--gr)':gradient<25?'var(--am)':'var(--rd)')+'">'+gradient+'</div><div class="sl">Gradient A-a O2</div></div>';
+  h+='</div>';
+  h+='<div class="rb">';
+  h+='<div class="rr"><span class="rl">P/F ratio</span><span><span class="'+pf_cls+'">'+pf+' mmHg</span> — '+(pf>=300?'Normal':pf>=200?'SDRA leger (200-300)':pf>=100?'SDRA modere (100-200)':'SDRA severe (&lt;100)')+'</span></div>';
+  h+='<div class="rr"><span class="rl">Gradient A-a</span><span><span class="'+(gradient<10?'ok':gradient<25?'wa':'da')+'">'+gradient+' mmHg</span> '+(gradient>25?'— Eleve : shunt, trouble V/Q, EP, pneumonie':'— Normal')+'</span></div>';
+  if(hb&&spo2){
+    var cao2=R1(1.34*hb*(spo2/100)+0.003*pao2);
+    h+='<div class="rr"><span class="rl">CaO2</span><span>'+cao2+' mL/dL (N: 17-22)</span></div>';
+  }
+  if(pf<150)h+='<div class="dbox">P/F &lt;150 avec FiO2 &gt;=60% — Indication decubitus ventral (PROSEVA). Envisager ECMO VV si refractaire.</div>';
+  h+='</div></div>';
+  return h;
+}
+
+window.onload=function(){SET('res-main','<div class="ibox">Saisir le pH et la PaCO2 pour demarrer l\'analyse.</div>');};
+</script>
+</body>
+</html>
